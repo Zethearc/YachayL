@@ -1,18 +1,13 @@
-
 from unittest import TestCase
 from typing import List
-
-from Tokens.token import (
-    Token,
-    TokenType,
-)
+from Tokens.token import Token, TokenType
 from Tokens.lexer import Lexer
 
 
 class LexerTest(TestCase):
 
     def test_illegal(self) -> None:
-        source: str = '¡¿@'
+        source: str = '¡¿@´'
         lexer: Lexer = Lexer(source)
 
         tokens: List[Token] = []
@@ -23,6 +18,7 @@ class LexerTest(TestCase):
             Token(TokenType.ILLEGAL, '¡'),
             Token(TokenType.ILLEGAL, '¿'),
             Token(TokenType.ILLEGAL, '@'),
+            Token(TokenType.ILLEGAL, '´')
         ]
 
         self.assertEquals(tokens, expected_tokens)
