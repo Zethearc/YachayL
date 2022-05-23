@@ -3,7 +3,7 @@ from enum import (
     Enum,
     unique
     )
-from typing import NameTuple
+from typing import NamedTuple
 
 @unique
 class TokenType(Enum):
@@ -22,9 +22,9 @@ class TokenType(Enum):
     RPAREN = auto()
     SEMICOLON = auto()
 
-class Token(NameTuple):
+class Token(NamedTuple):
     token_tyoe: TokenType
-    litelar: str
+    literal: str
     
     def __str__(self) -> str:
-        return f'Type: {self.token_type}, Literal: {self.literal}'
+        return f'Type: {self.token_tyoe}, Literal: {self.literal}'
