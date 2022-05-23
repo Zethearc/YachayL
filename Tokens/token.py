@@ -1,13 +1,14 @@
 from enum import (
     auto,
     Enum,
-    unique
-    )
+    unique,
+)
 from typing import NamedTuple
+
 
 @unique
 class TokenType(Enum):
-    ASSING = auto()
+    ASSIGN = auto()
     COMMA = auto()
     EOF = auto()
     FUNCTION = auto()
@@ -15,16 +16,16 @@ class TokenType(Enum):
     ILLEGAL = auto()
     INT = auto()
     LBRACE = auto()
-    LET = auto()    # Inicializate
+    LET = auto()
     LPAREN = auto()
-    PLUS = auto()   # Plus Operator
+    PLUS = auto()
     RBRACE = auto()
     RPAREN = auto()
     SEMICOLON = auto()
 
 class Token(NamedTuple):
-    token_tyoe: TokenType
+    token_type: TokenType
     literal: str
-    
+
     def __str__(self) -> str:
-        return f'Type: {self.token_tyoe}, Literal: {self.literal}'
+        return f'Type: {self.token_type}, Literal: {self.literal}'

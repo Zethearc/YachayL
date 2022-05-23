@@ -1,4 +1,7 @@
-from Tokens.token import Token, TokenType
+from Tokens.token import (
+    Token,
+    TokenType,
+)
 
 class Lexer:
 
@@ -14,12 +17,13 @@ class Lexer:
     def next_token(self) -> Token:
         token = Token(TokenType.ILLEGAL, self._character)
         self._read_character()
-    
+        return token
+
     def _read_character(self) -> None:
-        if self._read_position >- len(self._source):
+        if self._read_position >= len(self._source):
             self._character = ''
         else:
             self._character = self._source[self._read_position]
-        
+
         self._position = self._read_position
         self._read_position += 1
