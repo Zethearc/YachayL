@@ -15,9 +15,9 @@ class TokenType(Enum):
     ILLEGAL = auto()
     INT = auto()
     LBRACE = auto()
-    LET = auto()
+    LET = auto()    # Inicializate
     LPAREN = auto()
-    PLUS = auto()
+    PLUS = auto()   # Plus Operator
     RBRACE = auto()
     RPAREN = auto()
     SEMICOLON = auto()
