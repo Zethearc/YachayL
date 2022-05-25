@@ -31,10 +31,13 @@ class LexerTest(TestCase):
         expected_tokens: List[Token] = [
             Token(TokenType.ASSIGN, '='),
             Token(TokenType.PLUS, '+'),
+            Token(TokenType.MINUS, '-'),
+            Token(TokenType.DIVISION, '/'),
+            Token(TokenType.MULTIPLICATION, '*'),
         ]
 
         self.assertEquals(tokens, expected_tokens)
-
+'''
     def test_eof(self) -> None:
         source: str = '+'
         lexer: Lexer = Lexer(source)
@@ -48,4 +51,4 @@ class LexerTest(TestCase):
             Token(TokenType.EOF, ''),
         ]
         
-        self.assertEquals(tokens, expected_tokens)
+        self.assertEquals(tokens, expected_tokens)'''

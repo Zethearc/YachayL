@@ -4,9 +4,9 @@ from YachayLP.token import Token, TokenType
 
 t_ASSING  = r'^=$'
 t_PLUS    = r'\+$'
-t_MINUS   = r'-$'
-t_TIMES   = r'\*$'
-t_DIV     = r'/$'
+t_MINUS   = r'^-$'
+t_TIMES   = r'^\*$'
+t_DIV     = r'^/$'
 t_VOID    = r'^$'
 
 class Lexer:
@@ -24,8 +24,8 @@ class Lexer:
             token = Token(TokenType.ASSIGN, self._character)
         elif match(t_PLUS, self._character):
             token = Token(TokenType.PLUS, self._character)
-        elif match(t_VOID, self._character):
-            token = Token(TokenType.EOF, self._character)
+        elif match(t_MINUS, self._character):
+            token = Token(TokenType.MINUS, self._character)
         else:
             token = Token(TokenType.ILLEGAL, self._character)
 

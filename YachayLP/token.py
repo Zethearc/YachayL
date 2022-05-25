@@ -6,7 +6,7 @@ from typing import NamedTuple
 class TokenType(Enum):
     ASSIGN = auto()
     COMMA = auto()
-    DIVIDE = auto()
+    DIVISION = auto()
     EOF = auto()
     FUNCTION = auto()
     IDENT = auto()
@@ -16,7 +16,7 @@ class TokenType(Enum):
     LET = auto()
     LPAREN = auto()
     MINUS = auto()
-    TIMES = auto()
+    MULTIPLICATION = auto()
     PLUS = auto()
     RBRACE = auto()
     RPAREN = auto()
