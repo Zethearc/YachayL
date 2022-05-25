@@ -4,8 +4,9 @@ from typing import NamedTuple
 
 @unique
 class TokenType(Enum):
-    ASSING = auto()
+    ASSIGN = auto()
     COMMA = auto()
+    DIVIDE = auto()
     EOF = auto()
     FUNCTION = auto()
     IDENT = auto()
@@ -14,6 +15,8 @@ class TokenType(Enum):
     LBRACE = auto()
     LET = auto()
     LPAREN = auto()
+    MINUS = auto()
+    TIMES = auto()
     PLUS = auto()
     RBRACE = auto()
     RPAREN = auto()

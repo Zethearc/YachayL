@@ -1,4 +1,13 @@
+from re import match
+
 from YachayLP.token import Token, TokenType
+
+t_ASSING  = r'^=$'
+t_PLUS    = r'\+$'
+t_MINUS   = r'-$'
+t_TIMES   = r'\*$'
+t_DIV     = r'/$'
+t_VOID    = r'^$'
 
 class Lexer:
 
@@ -11,7 +20,14 @@ class Lexer:
         self._read_character()
 
     def next_token(self) -> Token:
-        token = Token(TokenType.ILLEGAL, self._character)
+        if match(t_ASSING, self._character):
+            token = Token(TokenType.ASSIGN, self._character)
+        elif match(t_PLUS, self._character):
+            token = Token(TokenType.PLUS, self._character)
+        elif match(t_VOID, self._character):
+            token = Token(TokenType.EOF, self._character)
+        else:
+            token = Token(TokenType.ILLEGAL, self._character)
 
         self._read_character()
 
