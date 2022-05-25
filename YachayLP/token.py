@@ -4,23 +4,23 @@ from typing import NamedTuple
 
 @unique
 class TokenType(Enum):
-    ASSIGN = auto()
-    COMMA = auto()
-    DIVISION = auto()
+    ASSIGN = auto()         # Assing Operator "="
+    COMMA = auto()          # Comma ","
+    DIVISION = auto()       # Division Operator "/"
     EOF = auto()
     FUNCTION = auto()
-    IDENT = auto()
-    ILLEGAL = auto()
-    INT = auto()
-    LBRACE = auto()
+    IDENT = auto()          # Identifier
+    ILLEGAL = auto()        # Illegal Token
+    INT = auto()            # Integer
+    LBRACE = auto()         # Delimiter "("
     LET = auto()
-    LPAREN = auto()
-    MINUS = auto()
-    MULTIPLICATION = auto()
-    PLUS = auto()
-    RBRACE = auto()
-    RPAREN = auto()
-    SEMCLON = auto()
+    LPAREN = auto()         # Delimiter "{"
+    MINUS = auto()          # Sus operator "-"
+    MULTIPLICATION = auto() # Multiplication operator "*"
+    PLUS = auto()           # Addition operator "+"
+    RBRACE = auto()         # Delimiter ")"
+    RPAREN = auto()         # Delimiter "}"
+    SEMCLON = auto()        # SemiColon ";"
 
 class Token(NamedTuple):
     token_type: TokenType

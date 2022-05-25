@@ -2,6 +2,8 @@ from re import match
 
 from YachayLP.token import Token, TokenType
 
+# REGULAR EXPRESIONS
+
 t_ASSING  = r'^=$'
 t_PLUS    = r'\+$'
 t_MINUS   = r'^-$'
@@ -26,6 +28,12 @@ class Lexer:
             token = Token(TokenType.PLUS, self._character)
         elif match(t_MINUS, self._character):
             token = Token(TokenType.MINUS, self._character)
+        elif match(t_TIMES, self._character):
+            token = Token(TokenType.MULTIPLICATION, self._character)
+        elif match(t_DIV, self._character):
+            token = Token(TokenType.DIVISION, self._character)
+        elif match(t_VOID, self._character):
+            token = Token(TokenType.EOF, self._character)
         else:
             token = Token(TokenType.ILLEGAL, self._character)
 

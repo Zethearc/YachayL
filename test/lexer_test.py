@@ -21,7 +21,7 @@ class LexerTest(TestCase):
         self.assertEqual(tokens, expected_tokens)
     
     def test_one_character_operator(self) -> None:
-        source: str = '=+'
+        source: str = '=+-/*'
         lexer: Lexer = Lexer(source)
 
         tokens: List[Token] = []
@@ -37,7 +37,7 @@ class LexerTest(TestCase):
         ]
 
         self.assertEquals(tokens, expected_tokens)
-'''
+
     def test_eof(self) -> None:
         source: str = '+'
         lexer: Lexer = Lexer(source)
@@ -51,4 +51,4 @@ class LexerTest(TestCase):
             Token(TokenType.EOF, ''),
         ]
         
-        self.assertEquals(tokens, expected_tokens)'''
+        self.assertEquals(tokens, expected_tokens)
