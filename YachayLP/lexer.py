@@ -4,12 +4,23 @@ from YachayLP.token import Token, TokenType
 
 # REGULAR EXPRESIONS
 
+## OPERATORS
+
 t_ASSING  = r'^=$'
 t_PLUS    = r'\+$'
 t_MINUS   = r'^-$'
 t_TIMES   = r'^\*$'
 t_DIV     = r'^/$'
 t_VOID    = r'^$'
+
+## DELIMITERS
+
+t_LPAREN  = r'^\($'
+t_RPAREN  = r'^\)$'
+t_LBRACE  = r'^\{$'
+t_RBRACE  = r'^\}$'
+t_COMMA   = r'^\,$'
+t_SEMICOLON   = r'^;$'
 
 class Lexer:
 
@@ -32,6 +43,18 @@ class Lexer:
             token = Token(TokenType.MULTIPLICATION, self._character)
         elif match(t_DIV, self._character):
             token = Token(TokenType.DIVISION, self._character)
+        elif match(t_LPAREN, self._character):
+            token = Token(TokenType.LPAREN, self._character)
+        elif match(t_RPAREN, self._character):
+            token = Token(TokenType.RPAREN, self._character)
+        elif match(t_LBRACE, self._character):
+            token = Token(TokenType.LBRACE, self._character)
+        elif match(t_RBRACE, self._character):
+            token = Token(TokenType.RBRACE, self._character)
+        elif match(t_COMMA, self._character):
+            token = Token(TokenType.COMMA, self._character)
+        elif match(t_SEMICOLON, self._character):
+            token = Token(TokenType.SEMICOLON, self._character)
         elif match(t_VOID, self._character):
             token = Token(TokenType.EOF, self._character)
         else:

@@ -12,15 +12,15 @@ class TokenType(Enum):
     IDENT = auto()          # Identifier
     ILLEGAL = auto()        # Illegal Token
     INT = auto()            # Integer
-    LBRACE = auto()         # Delimiter "("
+    LBRACE = auto()         # Delimiter "{"
     LET = auto()
-    LPAREN = auto()         # Delimiter "{"
+    LPAREN = auto()         # Delimiter "("
     MINUS = auto()          # Sus operator "-"
     MULTIPLICATION = auto() # Multiplication operator "*"
     PLUS = auto()           # Addition operator "+"
-    RBRACE = auto()         # Delimiter ")"
-    RPAREN = auto()         # Delimiter "}"
-    SEMCLON = auto()        # SemiColon ";"
+    RBRACE = auto()         # Delimiter "}"
+    RPAREN = auto()         # Delimiter ")"
+    SEMICOLON = auto()       # SemiColon ";"
 
 class Token(NamedTuple):
     token_type: TokenType
