@@ -20,9 +20,10 @@ class TokenType(Enum):
     LBRACE = auto()         # Delimiter "{"
     LET = auto()
     LPAREN = auto()         # Delimiter "("
+    LT = auto()
     MINUS = auto()          # Sus operator "-"
     MULTIPLICATION = auto() # Multiplication operator "*"
-    LT = auto()
+    NOT = auto()
     PLUS = auto()           # Addition operator "+"
     RETURN = auto()
     RBRACE = auto()         # Delimiter "}"

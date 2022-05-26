@@ -32,6 +32,7 @@ t_WHITES = r'^\s$'
 
 t_LT = r'^<$'
 t_GT = r'^>$'
+t_NOT = r'^!$'
 
 class Lexer:
 
@@ -73,6 +74,8 @@ class Lexer:
             token = Token(TokenType.LT, self._character)
         elif match(t_GT, self._character):
             token = Token(TokenType.GT, self._character)
+        elif match(t_NOT, self._character):
+            token = Token(TokenType.NOT, self._character)
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)
