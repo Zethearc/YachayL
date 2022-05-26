@@ -1,6 +1,6 @@
 from re import match
 
-from YachayLP.token import Token, TokenType
+from YachayLP.token import Token, TokenType, lookup_token_type
 
 # REGULAR EXPRESIONS
 
@@ -22,6 +22,12 @@ t_RBRACE  = r'^\}$'
 t_COMMA   = r'^\,$'
 t_SEMICOLON   = r'^;$'
 
+## LETTERS & NUMBERS
+
+t_LETTERS = r'^[a-záéíóóA-ZÁÉÍÓÚñÑ_]$'
+t_NUMBERS = r'^\d$'
+t_WHITES = r'^\s$'
+
 class Lexer:
 
     def __init__(self, source: str) -> None:
@@ -33,6 +39,7 @@ class Lexer:
         self._read_character()
 
     def next_token(self) -> Token:
+        self._skip_whitespace()
         if match(t_ASSING, self._character):
             token = Token(TokenType.ASSIGN, self._character)
         elif match(t_PLUS, self._character):
@@ -57,12 +64,27 @@ class Lexer:
             token = Token(TokenType.SEMICOLON, self._character)
         elif match(t_VOID, self._character):
             token = Token(TokenType.EOF, self._character)
+        elif self._is_letter(self._character):
+            literal = self._read_identifier()
+            token_type = lookup_token_type(literal)
+
+            return Token(token_type, literal)
+        elif self._is_number(self._character):
+            literal = self._read_number()
+
+            return Token(TokenType.INT, literal)
         else:
             token = Token(TokenType.ILLEGAL, self._character)
 
         self._read_character()
 
         return token
+    
+    def _is_letter(self, character: str) -> bool:
+        return bool(match(t_LETTERS, character))
+
+    def _is_number(self, character: str) -> bool:
+        return bool(match(t_NUMBERS, character))
 
     def _read_character(self) -> None:
         if self._read_position >= len(self._source):
@@ -72,3 +94,23 @@ class Lexer:
 
         self._position = self._read_position
         self._read_position += 1
+    
+    def _read_identifier(self) -> str:
+        initial_position = self._position
+        
+        while self._is_letter(self._character):
+            self._read_character()
+        
+        return self._source[initial_position: self._position]
+    
+    def _read_number(self) -> str:
+        initial_position = self._position
+
+        while self._is_number(self._character):
+            self._read_character()
+        
+        return self._source[initial_position:self._position]
+
+    def _skip_whitespace(self) -> None:
+        while match(t_WHITES, self._character):
+            self._read_character()

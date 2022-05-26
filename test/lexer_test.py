@@ -71,3 +71,21 @@ class LexerTest(TestCase):
         ]
 
         self.assertEquals(tokens, expected_tokens)
+    
+    def test_assigment(self) -> None:
+        source: str = 'var five = 5;'
+        lexer: Lexer = Lexer(source)
+
+        tokens: List[Token] = []
+        for i in range (5):
+            tokens.append(lexer.next_token())
+        
+        expected_tokens: List[Token] = [
+            Token(TokenType.LET, 'var'),
+            Token(TokenType.IDENT, 'five'),
+            Token(TokenType.ASSIGN, '='),
+            Token(TokenType.INT, '5'),
+            Token(TokenType.SEMICOLON, ';'),
+        ]
+
+        self.assertEquals(tokens, expected_tokens)
