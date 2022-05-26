@@ -4,6 +4,7 @@ from typing import NamedTuple, Dict
 
 @unique
 class TokenType(Enum):
+    """Tokens used by YachayLP"""
     ASSIGN = auto()         # Assing Operator "="
     COMMA = auto()          # Comma ","
     DIVISION = auto()       # Division Operator "/"
@@ -20,7 +21,7 @@ class TokenType(Enum):
     PLUS = auto()           # Addition operator "+"
     RBRACE = auto()         # Delimiter "}"
     RPAREN = auto()         # Delimiter ")"
-    SEMICOLON = auto()       # SemiColon ";"
+    SEMICOLON = auto()      # SemiColon ";"
 
 class Token(NamedTuple):
     token_type: TokenType
@@ -31,6 +32,7 @@ class Token(NamedTuple):
 
 def lookup_token_type(literal: str) -> TokenType:
     keywords: Dict[str, TokenType] = {
+        'function': TokenType.FUNCTION,
         'var': TokenType.LET
     }
 

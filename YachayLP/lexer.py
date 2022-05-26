@@ -67,7 +67,7 @@ class Lexer:
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)
-
+            
             return Token(token_type, literal)
         elif self._is_number(self._character):
             literal = self._read_number()

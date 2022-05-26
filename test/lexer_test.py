@@ -89,3 +89,59 @@ class LexerTest(TestCase):
         ]
 
         self.assertEquals(tokens, expected_tokens)
+    
+    def test_function_declaration(self) -> None:
+        source: str = '''
+            var sum = function(x, y) {
+                x + y;
+            };
+        '''
+        lexer: Lexer = Lexer(source)
+
+        tokens: List[Token] = []
+        for i in range(16):
+            tokens.append(lexer.next_token())
+
+        expected_tokens: List[Token] = [
+            Token(TokenType.LET, 'var'),
+            Token(TokenType.IDENT, 'sum'),
+            Token(TokenType.ASSIGN, '='),
+            Token(TokenType.FUNCTION, 'function'),
+            Token(TokenType.LPAREN, '('),
+            Token(TokenType.IDENT, 'x'),
+            Token(TokenType.COMMA, ','),
+            Token(TokenType.IDENT, 'y'),
+            Token(TokenType.RPAREN, ')'),
+            Token(TokenType.LBRACE, '{'),
+            Token(TokenType.IDENT, 'x'),
+            Token(TokenType.PLUS, '+'),
+            Token(TokenType.IDENT, 'y'),
+            Token(TokenType.SEMICOLON, ';'),
+            Token(TokenType.RBRACE, '}'),
+            Token(TokenType.SEMICOLON, ';'),
+        ]
+
+        self.assertEquals(tokens, expected_tokens)
+    
+    def test_function_call(self) -> None:
+        source: str = '''
+            var result = sum(two, three);
+        '''
+        lexer: Lexer = Lexer(source)
+
+        tokens: List[Token] = []
+        for i in range(10):
+            tokens.append(lexer.next_token())
+        
+        expected_tokens: List[Token]=[
+            Token(TokenType.LET,'var'),
+            Token(TokenType.IDENT,'result'),
+            Token(TokenType.ASSIGN,'='),
+            Token(TokenType.PLUS,'sum'),
+            Token(TokenType.LPAREN,'('),
+            Token(TokenType.IDENT,'two'),
+            Token(TokenType.COMMA,','),
+            Token(TokenType.IDENT,'three'),
+            Token(TokenType.RPAREN,')'),
+            Token(TokenType.SEMICOLON,';'),
+        ]
