@@ -28,6 +28,11 @@ t_LETTERS = r'^[a-záéíóóA-ZÁÉÍÓÚñÑ_]$'
 t_NUMBERS = r'^\d$'
 t_WHITES = r'^\s$'
 
+## BINARY OPERATORS
+
+t_LT = r'^<$'
+t_GT = r'^>$'
+
 class Lexer:
 
     def __init__(self, source: str) -> None:
@@ -64,10 +69,14 @@ class Lexer:
             token = Token(TokenType.SEMICOLON, self._character)
         elif match(t_VOID, self._character):
             token = Token(TokenType.EOF, self._character)
+        elif match(t_LT, self._character):
+            token = Token(TokenType.LT, self._character)
+        elif match(t_GT, self._character):
+            token = Token(TokenType.GT, self._character)
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)
-            
+
             return Token(token_type, literal)
         elif self._is_number(self._character):
             literal = self._read_number()

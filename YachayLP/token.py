@@ -9,8 +9,12 @@ class TokenType(Enum):
     COMMA = auto()          # Comma ","
     DIVISION = auto()       # Division Operator "/"
     EOF = auto()
+    ELSE = auto()
+    FALSE = auto()
     FUNCTION = auto()
+    GT = auto()
     IDENT = auto()          # Identifier
+    IF = auto()
     ILLEGAL = auto()        # Illegal Token
     INT = auto()            # Integer
     LBRACE = auto()         # Delimiter "{"
@@ -18,10 +22,13 @@ class TokenType(Enum):
     LPAREN = auto()         # Delimiter "("
     MINUS = auto()          # Sus operator "-"
     MULTIPLICATION = auto() # Multiplication operator "*"
+    LT = auto()
     PLUS = auto()           # Addition operator "+"
+    RETURN = auto()
     RBRACE = auto()         # Delimiter "}"
     RPAREN = auto()         # Delimiter ")"
     SEMICOLON = auto()      # SemiColon ";"
+    TRUE = auto()
 
 class Token(NamedTuple):
     token_type: TokenType
@@ -32,8 +39,13 @@ class Token(NamedTuple):
 
 def lookup_token_type(literal: str) -> TokenType:
     keywords: Dict[str, TokenType] = {
+        'False': TokenType.FALSE,
         'function': TokenType.FUNCTION,
-        'var': TokenType.LET
+        'return': TokenType.RETURN,
+        'if': TokenType.IF,
+        'else': TokenType.ELSE,
+        'var': TokenType.LET,
+        'True': TokenType.TRUE,
     }
 
     return keywords.get(literal, TokenType.IDENT)
