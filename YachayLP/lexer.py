@@ -47,7 +47,10 @@ class Lexer:
     def next_token(self) -> Token:
         self._skip_whitespace()
         if match(t_ASSING, self._character):
-            token = Token(TokenType.ASSIGN, self._character)
+            if self._peek_character() == '=':
+                token = self._make_two_character_token(TokenType.EQ)
+            else:
+                token = Token(TokenType.ASSIGN, self._character)
         elif match(t_PLUS, self._character):
             token = Token(TokenType.PLUS, self._character)
         elif match(t_MINUS, self._character):
@@ -75,7 +78,10 @@ class Lexer:
         elif match(t_GT, self._character):
             token = Token(TokenType.GT, self._character)
         elif match(t_NOT, self._character):
-            token = Token(TokenType.NOT, self._character)
+            if self._peek_character() == '=':
+                token = self._make_two_character_token(TokenType.NOT_EQ)
+            else:
+                token = Token(TokenType.NOT, self._character)
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)
@@ -97,6 +103,13 @@ class Lexer:
 
     def _is_number(self, character: str) -> bool:
         return bool(match(t_NUMBERS, character))
+
+    def _make_two_character_token(self, token_type: TokenType) -> Token:
+        prefix = self._character
+        self._read_character()
+        suffix = self._character
+
+        return Token(token_type, f'{prefix}{suffix}')
 
     def _read_character(self) -> None:
         if self._read_position >= len(self._source):
@@ -122,6 +135,12 @@ class Lexer:
             self._read_character()
         
         return self._source[initial_position:self._position]
+
+    def _peek_character(self) -> str:
+        if self._read_position >= len(self._source):
+            return ''
+
+        return self._source[self._read_position]
 
     def _skip_whitespace(self) -> None:
         while match(t_WHITES, self._character):

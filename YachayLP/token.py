@@ -10,6 +10,7 @@ class TokenType(Enum):
     DIVISION = auto()       # Division Operator "/"
     EOF = auto()
     ELSE = auto()
+    EQ = auto()
     FALSE = auto()
     FUNCTION = auto()
     GT = auto()
@@ -24,6 +25,7 @@ class TokenType(Enum):
     MINUS = auto()          # Sus operator "-"
     MULTIPLICATION = auto() # Multiplication operator "*"
     NOT = auto()
+    NOT_EQ = auto()
     PLUS = auto()           # Addition operator "+"
     RETURN = auto()
     RBRACE = auto()         # Delimiter "}"
