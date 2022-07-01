@@ -3,13 +3,13 @@ Programming Language for Yachay Tech students.
 
 # Componentes Principales
 
-* Lexer (50% Done)
-* Parser
+* Lexer (Complete!)
+* Parser (10%)
 * Abstractt Syntax Tree (AST)
 * Representación interna de objetos
 * Evaluador
-* REPL
+* REPL (Complete)
 
 # Análisis léxico
 
-Código fuente -> Lexer -> tokens
+Código fuente -> Lexer -> tokens -> Parser
