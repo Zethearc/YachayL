@@ -209,3 +209,4 @@ class LexerTest(TestCase):
             Token(TokenType.INT, '9'),
             Token(TokenType.SEMICOLON, ';'),
         ]
+        self.assertEquals(tokens, expected_tokens)
