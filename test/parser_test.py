@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from YachayLP.lexer import Lexer
 from YachayLP.parser import Parser
-from YachayLP.ast import LetStatement, Program
+from YachayLP.ast import LetStatement, Program, ReturnStatement
 
 class ParserTest(TestCase):
     
@@ -60,6 +60,20 @@ class ParserTest(TestCase):
         parser: Parser = Parser(lexer)
         
         program: Program = parser.parse_program()
-        print(parser.errors)
         
-        self.assertEquals(len(parser.errors), 2)
+        self.assertEquals(len(parser.errors), 1)
+        
+    def test_return_statement(self) -> None:
+        source: str = '''
+            return 5;
+            return foo;
+        '''
+        lexer: Lexer = Lexer(source)
+        parser: Parser = Parser(lexer)
+
+        program: Program = parser.parse_program()
+
+        self.assertEquals(len(program.statements), 2)
+        for statement in program.statements:
+            self.assertEquals(statement.token_literal(), 'return')
+            self.assertIsInstance(statement, ReturnStatement)
