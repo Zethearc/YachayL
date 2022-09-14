@@ -1,7 +1,7 @@
 from enum import IntEnum
 from typing import Callable, Dict, List, Optional
 
-from YachayLP.ast import Expression, ExpressionStatement, Identifier, LetStatement, Program, Statement, ReturnStatement
+from YachayLP.ast import Expression, ExpressionStatement, Identifier, Integer,LetStatement, Program, Statement, ReturnStatement
 from YachayLP.lexer import Lexer
 from YachayLP.token import Token, TokenType
 
@@ -98,6 +98,21 @@ class Parser:
         
         return Identifier(token=self._current_token,
                           value=self._current_token.literal)
+        
+    def _parse_integer(self) -> Optional[Integer]:
+        assert self._current_token is not None
+        integer = Integer(token=self._current_token)
+
+        try:
+            integer.value = int(self._current_token.literal)
+        except ValueError:
+            message = f'No se ha podido parsear {self._current_token.literal} ' + \
+                'como entero.'
+            self._errors.append(message)
+
+            return None
+
+        return integer
 
     def _parse_let_statement(self) -> Optional[LetStatement]:
         assert self._current_token is not None
@@ -106,7 +121,7 @@ class Parser:
         if not self._expected_token(TokenType.IDENT):
             return None
 
-        let_statement.name = Identifier(token=self._current_token, value=self._current_token.literal)
+        let_statement.name = self._parse_identifier()
 
         if not self._expected_token(TokenType.ASSIGN):
             return None
@@ -141,7 +156,8 @@ class Parser:
     def _register_infix_fns(self) -> InfixParseFns:
         return {}
     
-    def _register_prefix_fns(self) -> PrefixParseFn:
+    def _register_prefix_fns(self) -> PrefixParseFns:
         return {
             TokenType.IDENT: self._parse_identifier,
+            TokenType.INT: self._parse_integer,
         }
