@@ -5,7 +5,8 @@ from typing import (
     List,
     Optional,
 )
-from YachayLP.ast import (Expression,
+from YachayLP.ast import(Boolean,
+                        Expression,
                         ExpressionStatement,
                         Identifier,
                         Integer,
@@ -35,6 +36,7 @@ class Precedence(IntEnum):
     PREFIX = 6
     CALL = 7
 
+
 PRECEDENCES: Dict[TokenType, Precedence] = {
     TokenType.EQ: Precedence.EQUALS,
     TokenType.NOT_EQ: Precedence.EQUALS,
@@ -45,6 +47,7 @@ PRECEDENCES: Dict[TokenType, Precedence] = {
     TokenType.DIVISION: Precedence.PRODUCT,
     TokenType.MULTIPLICATION: Precedence.PRODUCT,
 }
+
 
 class Parser:
 
@@ -80,7 +83,7 @@ class Parser:
     def _advance_tokens(self) -> None:
         self._current_token = self._peek_token
         self._peek_token = self._lexer.next_token()
-        
+
     def _current_precedence(self) -> Precedence:
         assert self._current_token is not None
         try:
@@ -105,6 +108,12 @@ class Parser:
 
         self._errors.append(error)
 
+    def _parse_boolean(self) -> Boolean:
+        assert self._current_token is not None
+
+        return Boolean(token=self._current_token,
+                       value=self._current_token.token_type == TokenType.TRUE)
+
     def _parse_expression(self, precedence: Precedence) -> Optional[Expression]:
         assert self._current_token is not None
         try:
@@ -116,15 +125,15 @@ class Parser:
             return None
 
         left_expression = prefix_parse_fn()
-        
+
         assert self._peek_token is not None
         while not self._peek_token.token_type == TokenType.SEMICOLON and \
-            precedence < self._peek_precedence():
+                precedence < self._peek_precedence():
             try:
                 infix_parse_fn = self._infix_parse_fns[self._peek_token.token_type]
-                
+
                 self._advance_tokens()
-                
+
                 assert left_expression is not None
                 left_expression = infix_parse_fn(left_expression)
             except KeyError:
@@ -149,19 +158,19 @@ class Parser:
 
         return Identifier(token=self._current_token,
                           value=self._current_token.literal)
-        
+
     def _parse_infix_expression(self, left: Expression) -> Infix:
         assert self._current_token is not None
         infix = Infix(token=self._current_token,
                       operator=self._current_token.literal,
                       left=left)
-        
+
         precedence = self._current_precedence()
-        
+
         self._advance_tokens()
-        
+
         infix.right = self._parse_expression(precedence)
-        
+
         return infix
 
     def _parse_integer(self) -> Optional[Integer]:
@@ -250,8 +259,10 @@ class Parser:
 
     def _register_prefix_fns(self) -> PrefixParseFns:
         return {
+            TokenType.FALSE: self._parse_boolean,
             TokenType.IDENT: self._parse_identifier,
             TokenType.INT: self._parse_integer,
             TokenType.MINUS: self._parse_prefix_expression,
             TokenType.NOT: self._parse_prefix_expression,
+            TokenType.TRUE: self._parse_boolean,
         }
