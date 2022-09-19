@@ -31,6 +31,7 @@ class TokenType(Enum):
     RBRACE = auto()         # Delimiter "}"
     RPAREN = auto()         # Delimiter ")"
     SEMICOLON = auto()      # SemiColon ";"
+    STRING = auto()
     TRUE = auto()
 
 class Token(NamedTuple):

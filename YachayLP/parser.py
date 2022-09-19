@@ -5,24 +5,30 @@ from typing import (
     List,
     Optional,
 )
-from YachayLP.ast import(Block,
-                        Boolean,
-                        Call,
-                        Expression,
-                        ExpressionStatement,
-                        Function,
-                        Identifier,
-                        If,
-                        Integer,
-                        Infix,
-                        LetStatement,
-                        Prefix,
-                        Program,
-                        ReturnStatement,
-                        Statement,
-                        )
+
+from YachayLP.ast import (
+    Block,
+    Boolean,
+    Call,
+    Expression,
+    ExpressionStatement,
+    Function,
+    Identifier,
+    If,
+    Infix,
+    Integer,
+    LetStatement,
+    Prefix,
+    Program,
+    ReturnStatement,
+    Statement,
+    StringLiteral,
+)
 from YachayLP.lexer import Lexer
-from YachayLP.token import Token, TokenType
+from YachayLP.token import (
+    Token,
+    TokenType,
+)
 
 
 PrefixParseFn = Callable[[], Optional[Expression]]
@@ -141,32 +147,32 @@ class Parser:
         assert self._current_token is not None
         call = Call(self._current_token, function)
         call.arguments = self._parse_call_arguments()
-        
+
         return call
-    
+
     def _parse_call_arguments(self) -> Optional[List[Expression]]:
         arguments: List[Expression] = []
-        
+
         assert self._peek_token is not None
         if self._peek_token.token_type == TokenType.RPAREN:
-            self._advance_tokens
-            
+            self._advance_tokens()
+
             return arguments
-        
+
         self._advance_tokens()
         if expression := self._parse_expression(Precedence.LOWEST):
             arguments.append(expression)
-            
+
         while self._peek_token.token_type == TokenType.COMMA:
             self._advance_tokens()
             self._advance_tokens()
-            
+
             if expression := self._parse_expression(Precedence.LOWEST):
                 arguments.append(expression)
-                
+
         if not self._expected_token(TokenType.RPAREN):
             return None
-        
+
         return arguments
 
     def _parse_expression(self, precedence: Precedence) -> Optional[Expression]:
@@ -207,8 +213,7 @@ class Parser:
             self._advance_tokens()
 
         return expression_statement
-    
-    
+
     def _parse_grouped_expression(self) -> Optional[Expression]:
         self._advance_tokens()
 
@@ -218,7 +223,7 @@ class Parser:
             return None
 
         return expression
-    
+
     def _parse_function(self) -> Optional[Function]:
         assert self._current_token is not None
         function = Function(token=self._current_token)
@@ -270,7 +275,7 @@ class Parser:
 
         return Identifier(token=self._current_token,
                           value=self._current_token.literal)
-        
+
     def _parse_if(self) -> Optional[If]:
         assert self._current_token is not None
         if_expression = If(token=self._current_token)
@@ -298,9 +303,9 @@ class Parser:
                 return None
 
             if_expression.alternative = self._parse_block()
-            
+
         return if_expression
-        
+
     def _parse_infix_expression(self, left: Expression) -> Infix:
         assert self._current_token is not None
         infix = Infix(token=self._current_token,
@@ -343,9 +348,9 @@ class Parser:
             return None
 
         self._advance_tokens()
-        
+
         let_statement.value = self._parse_expression(Precedence.LOWEST)
-        
+
         assert self._peek_token is not None
         if self._peek_token.token_type == TokenType.SEMICOLON:
             self._advance_tokens()
@@ -370,7 +375,7 @@ class Parser:
         self._advance_tokens()
 
         return_statement.return_value = self._parse_expression(Precedence.LOWEST)
-        
+
         assert self._peek_token is not None
         if self._peek_token.token_type == TokenType.SEMICOLON:
             self._advance_tokens()
@@ -385,6 +390,11 @@ class Parser:
             return self._parse_return_statement()
         else:
             return self._parse_expression_statement()
+
+    def _parse_string_literal(self) -> Expression:
+        assert self._current_token is not None
+        return StringLiteral(token=self._current_token,
+                             value=self._current_token.literal)
 
     def _peek_precedence(self) -> Precedence:
         assert self._peek_token is not None
@@ -417,4 +427,5 @@ class Parser:
             TokenType.MINUS: self._parse_prefix_expression,
             TokenType.NOT: self._parse_prefix_expression,
             TokenType.TRUE: self._parse_boolean,
+            TokenType.STRING: self._parse_string_literal
         }

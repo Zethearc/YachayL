@@ -6,13 +6,28 @@ from enum import (
     auto,
     Enum,
 )
+from typing import (
+    Dict,
+    List,
+)
+from typing_extensions import Protocol
+
+
+from YachayLP.ast import (
+    Block,
+    Identifier,
+)
 
 
 class ObjectType(Enum):
     BOOLEAN = auto()
+    BUILTIN = auto()
+    ERROR = auto()
+    FUNCTION = auto()
     INTEGER = auto()
     NULL = auto()
     RETURN = auto()
+    STRING = auto()
 
 
 class Object(ABC):
@@ -56,7 +71,7 @@ class Null(Object):
         return ObjectType.NULL
 
     def inspect(self) -> str:
-        return 'Nulo'
+        return 'null'
 
 
 class Return(Object):
@@ -69,3 +84,85 @@ class Return(Object):
 
     def inspect(self) -> str:
         return self.value.inspect()
+
+
+class Error(Object):
+
+    def __init__(self, message: str) -> None:
+        self.message = message
+
+    def type(self) -> ObjectType:
+        return ObjectType.ERROR
+
+    def inspect(self) -> str:
+        return f'Error: {self.message}'
+
+
+class Environment(Dict):
+
+    def __init__(self, outer = None):
+        self._store = dict()
+        self._outer = outer
+
+    def __getitem__(self, key):
+        try:
+            return self._store[key]
+        except KeyError as e:
+            if self._outer is not None:
+                return self._outer[key]
+
+            raise e
+
+    def __setitem__(self, key, value):
+        self._store[key] = value
+
+    def __delitem__(self, key):
+        del self._store[key]
+
+
+class Function(Object):
+
+    def __init__(self,
+                 parameters: List[Identifier],
+                 body: Block,
+                 env: Environment) -> None:
+        self.parameters = parameters
+        self.body = body
+        self.env = env
+
+    def type(self) -> ObjectType:
+        return ObjectType.FUNCTION
+
+    def inspect(self) -> str:
+        params: str = ', '.join([str(param) for param in self.parameters])
+
+        return 'function({}) {{\n{}\n}}'.format(params, str(self.body))
+
+
+class String(Object):
+
+    def __init__(self, value: str) -> None:
+        self.value = value
+
+    def type(self) -> ObjectType:
+        return ObjectType.STRING
+
+    def inspect(self) -> str:
+        return self.value
+
+
+class BuiltinFunction(Protocol):
+
+    def __call__(self, *args: Object) -> Object: ...
+
+
+class Builtin(Object):
+
+    def __init__(self, fn: BuiltinFunction):
+        self.fn = fn
+
+    def type(self) -> ObjectType:
+        return ObjectType.BUILTIN
+
+    def inspect(self) -> str:
+        return 'builtin function'
