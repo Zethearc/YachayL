@@ -108,7 +108,7 @@ class Parser:
 
     def _expected_token_error(self, token_type: TokenType) -> None:
         assert self._peek_token is not None
-        error = f'Se esperaba que el siguiente tokne fuera {token_type} ' + \
+        error = f'Se esperaba que el siguiente token fuera {token_type} ' + \
             f'pero se obtuvo {self._peek_token.token_type}'
 
         self._errors.append(error)

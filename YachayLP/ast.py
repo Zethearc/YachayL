@@ -170,11 +170,11 @@ class If(Expression):
                  alternative: Optional[Block] = None) -> None:
         super().__init__(token)
         self.condition = condition
-        self.cosequence = consequence
+        self.consequence = consequence
         self.alternative = alternative
     
     def __str__(self) -> str:
-        out: str = f'if {str(self._condition)} {str(self.consequence)}'
+        out: str = f'if {str(self.condition)} {str(self.consequence)}'
         
         if self.alternative:
             out += f'else {str(self.alternative)}'

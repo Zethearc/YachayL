@@ -4,7 +4,7 @@ from typing import NamedTuple, Dict
 
 @unique
 class TokenType(Enum):
-    """Tokens used by YachayLP"""
+    """Tokens used by Cdots"""
     ASSIGN = auto()         # Assing Operator "="
     COMMA = auto()          # Comma ","
     DIVISION = auto()       # Division Operator "/"
